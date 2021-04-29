@@ -17,6 +17,7 @@ app.get('/', (req, res)=> {
 })
 
 app.get('/add', (req, res) => {
+    connection.connect();
     queries = req.query;
     qry = "INSERT INTO `mybook` (`id`, `token`, `isbn`, `when`) VALUES (NULL, '" + queries.token + "', '" + queries.isbn +"', CURRENT_TIMESTAMP);"
     connection.query(qry, function(error, results, fields){
@@ -30,6 +31,7 @@ app.get('/add', (req, res) => {
 });
 
 app.get('/del', (req, res) => {
+    connection.connect();
     queries = req.query;
     qry = "DELETE FROM `mybook` WHERE `token` LIKE '" + queries.token + "' AND `isbn` = " + queries.isbn;
     console.log(qry);
@@ -43,6 +45,7 @@ app.get('/del', (req, res) => {
 });
 
 app.get('/show', (req, res) => {
+    connection.connect();
     queries = req.query;
     qry = "SELECT * FROM `mybook` WHERE `token` LIKE '" + queries.token +"'";
     connection.query(qry, function(error, results, fields){
