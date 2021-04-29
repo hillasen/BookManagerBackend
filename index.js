@@ -2,7 +2,7 @@ const express = require('express');
 var mysql = require('mysql');
 const security = require('./security.js');
 const app = express();
-const port = 80;
+const port = process.env.PORT || 3000;
 const dbSecurity = security.dbSecurity;
 const connection = mysql.createConnection({
     host : dbSecurity.host,
