@@ -4,19 +4,22 @@ const security = require('./security.js');
 const app = express();
 const port = process.env.PORT || 80;
 const dbSecurity = security.dbSecurity;
-const connection = mysql.createConnection({
-    host : dbSecurity.host,
-    password : dbSecurity.password,
-    user : dbSecurity.user,
-    database : dbSecurity.database
-    
-});
+
+
+
 
 app.get('/', (req, res)=> {
     res.send("Hello World!");
 })
 
 app.get('/add', (req, res) => {
+    const connection = mysql.createConnection({
+        host : dbSecurity.host,
+        password : dbSecurity.password,
+        user : dbSecurity.user,
+        database : dbSecurity.database
+        
+    });
     queries = req.query;
     qry = "INSERT INTO `mybook` (`id`, `token`, `isbn`, `when`) VALUES (NULL, '" + queries.token + "', '" + queries.isbn +"', CURRENT_TIMESTAMP);"
     connection.query(qry, function(error, results, fields){
@@ -26,10 +29,18 @@ app.get('/add', (req, res) => {
         console.log(results);
         
     })
+    connection.end();
     res.send("OK");
 });
 
 app.get('/del', (req, res) => {
+    const connection = mysql.createConnection({
+        host : dbSecurity.host,
+        password : dbSecurity.password,
+        user : dbSecurity.user,
+        database : dbSecurity.database
+        
+    });
     queries = req.query;
     qry = "DELETE FROM `mybook` WHERE `token` LIKE '" + queries.token + "' AND `isbn` = " + queries.isbn;
     console.log(qry);
@@ -39,10 +50,18 @@ app.get('/del', (req, res) => {
         }
         console.log(results);
     })
+    connection.end();
     res.send("OK");
 });
 
 app.get('/show', (req, res) => {
+    const connection = mysql.createConnection({
+        host : dbSecurity.host,
+        password : dbSecurity.password,
+        user : dbSecurity.user,
+        database : dbSecurity.database
+        
+    });
     queries = req.query;
     qry = "SELECT * FROM `mybook` WHERE `token` LIKE '" + queries.token +"'";
     connection.query(qry, function(error, results, fields){
@@ -51,7 +70,8 @@ app.get('/show', (req, res) => {
         }
         res.send(JSON.stringify(results))
     });
-    
+
+    connection.end();
 });
 
 app.listen(port , ()=>{
